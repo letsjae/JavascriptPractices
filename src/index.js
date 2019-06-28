@@ -52,10 +52,11 @@ class Game extends React.Component {
     }
   }
 
-  handleClick(i){
+  handleClick(i){  
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+    const locationInBoard = getBoardLocation(i);
 
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -64,9 +65,10 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares:squares,
-      }]),      
+        locationInBoard: locationInBoard,
+      }]),            
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
     });
   }
 
@@ -84,7 +86,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ? 
-      'Go to move #' + move :
+      'Go to move #' + move + ', location in board was: ' + step.locationInBoard:
       'Go to game start';
 
       return (
@@ -118,6 +120,23 @@ class Game extends React.Component {
       </div>
     );
   }
+}
+
+function getBoardLocation(i){
+    var locationsInBoard = {
+      /* 'Array Position' : '(column,row)' */
+      0: '(0,0)',
+      1: '(1,0)',
+      2: '(2,0)',
+      3: '(0,1)',
+      4: '(1,1)',
+      5: '(2,1)',
+      6: '(0,2)',
+      7: '(1,2)',
+      8: '(2,2)',
+    }
+
+   return locationsInBoard[i];
 }
 
 function calculateWinner(squares){
