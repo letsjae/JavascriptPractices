@@ -81,6 +81,7 @@ class Game extends React.Component {
       }]),            
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+      asc: true
     });
   }
 
@@ -91,6 +92,14 @@ class Game extends React.Component {
     })
   }
 
+  descOrder(){
+    this.setState({ asc: false})
+  }
+
+  ascOrder(){
+    this.setState({ asc: true})
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -98,7 +107,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ? 
-      'Go to move #' + move + ', location in board was: ' + step.locationInBoard:
+      'Go to move #' + move + ', location in board was: ' + step.locationInBoard :
       'Go to game start';
 
       return (
@@ -126,8 +135,17 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
+          <div>
+            <div> {'Show movements in order: ' }</div>
+            <button onClick={() => this.descOrder()}>
+              {'Descendent'}
+            </button>  
+            <button onClick={() => this.ascOrder()}>
+              {'Ascendent'}
+            </button>  
+          </div>
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol>{this.state.asc ? moves : moves.reverse()}</ol>
         </div>
       </div>
     );
